@@ -11,46 +11,48 @@ namespace KlientTest
         public static void Main(string[] args)
         {
             //Fredrik Habib 
-
-            try
+            while (true)
             {
-                string address = "127.0.0.1";
-                int port = 8001;
+                try
+                {
+                    string address = "127.0.0.1";
+                    int port = 8001;
 
-                //Ansluter till servern
-                Console.WriteLine("Ansluter...");
-                TcpClient tcpClient = new TcpClient();
-                tcpClient.Connect(address, port);
-                Console.WriteLine("Ansluten!");
+                    //Ansluter till servern
+                    Console.WriteLine("Ansluter...");
+                    TcpClient tcpClient = new TcpClient();
+                    tcpClient.Connect(address, port);
+                    Console.WriteLine("Ansluten!");
 
-                //skriver in meddelandet som ska skickas
-                Console.Write("Skriv in meddelandet: ");
-                String message = Console.ReadLine();
+                    //skriver in meddelandet som ska skickas
+                    Console.Write("Skriv in meddelandet: ");
+                    String message = Console.ReadLine();
 
-                //konvertera meddelande till ASCII-bytes eller  UTF-8
-                Byte[] bMessage = System.Text.Encoding.ASCII.GetBytes(message);
+                    //konvertera meddelande till ASCII-bytes eller  UTF-8
+                    Byte[] bMessage = System.Text.Encoding.ASCII.GetBytes(message);
 
-                //Skicka iväg meddelandet 
-                Console.WriteLine("Skickar...");
-                NetworkStream tcpStream = tcpClient.GetStream();
-                tcpStream.Write(bMessage, 0, bMessage.Length);
+                    //Skicka iväg meddelandet 
+                    Console.WriteLine("Skickar...");
+                    NetworkStream tcpStream = tcpClient.GetStream();
+                    tcpStream.Write(bMessage, 0, bMessage.Length);
 
-                //Tag emot meddelanden från servern:
-                Byte[] bRead = new byte [256];
-                int bReadSize = tcpStream.Read(bRead, 0, bRead.Length);
+                    //Tag emot meddelanden från servern:
+                    Byte[] bRead = new byte[256];
+                    int bReadSize = tcpStream.Read(bRead, 0, bRead.Length);
 
-                //Konverterar meddelandet till ett string objekt och de skrivs ut:
-                string read = "";
-                for (int i = 0; i < bReadSize; i++)
-                    read += Convert.ToChar(bRead[i]);
-                Console.WriteLine("Servern säger: " + read);
+                    //Konverterar meddelandet till ett string objekt och de skrivs ut:
+                    string read = "";
+                    for (int i = 0; i < bReadSize; i++)
+                        read += Convert.ToChar(bRead[i]);
+                    Console.WriteLine("Servern säger: " + read);
 
-                //Stäng anslutningen:
-                tcpClient.Close();
-            }
-         catch(Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
+                    //Stäng anslutningen:
+                    tcpClient.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e.Message);
+                }
             }
         }
     }
